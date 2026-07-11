@@ -91,6 +91,12 @@ WHERE id = %s
     def getMedicineByStockDescend(self):
        query="SELECT * FROM medicine ORDER BY id DESC"
        return self.Db.fetchOrderByStock(query)
+    
+    def getMedicineBYID(self,id):
+       query="SELECT * FROM medicine WHERE id = %s"
+       values=(id,)
+       return self.Db.fetchone(query,values)
+    
        
 
 

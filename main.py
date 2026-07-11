@@ -19,7 +19,15 @@ def about():
 
 @app.get("/medicine/{id}")
 def get_user(id: int):
-    return {"user_id": id}
+    db=Db.Db()
+    dt=DataHandle.DataHandleOp(db)
+    data=dt.getMedicineBYID(id)
+    if(len(data)>0):
+    
+        return {"status":1,"message": "success","data":data}
+    else:
+
+        return {"status":0,"message":"no data found"}
 
 @app.get("/getAllMedicineByStockAscend")
 def getAllMedicineAscend():
