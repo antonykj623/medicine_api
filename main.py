@@ -47,17 +47,7 @@ def getAllMedicineDescend():
         return {"status":0,"message":"no data found"}    
     
     
-@app.get("/getAllMedicineByStockDescend")
-def getAllMedicineDescend():
-    db=Db.Db()
-    dt=DataHandle.DataHandleOp(db)
-    data=dt.getMedicineByStockDescend()
-    if(len(data)>0):
-    
-        return {"status":1,"message": "success","data":data}
-    else:
-
-        return {"status":0,"message":"no data found"}       
+  
     
 
 @app.get("/getAllMedicines")
