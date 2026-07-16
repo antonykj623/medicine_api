@@ -8,6 +8,11 @@ class Db:
   password="nDyArKF9pK",
   )
 
+#         mydb=mysql.connector.connect(  host="localhost",
+#   user="root",
+#   password="root@1234",
+#   )
+
         mycursor = mydb.cursor(dictionary=True)
         self.mycursor=mycursor
         self.mydb=mydb
@@ -26,6 +31,17 @@ class Db:
     )"""   
 
         self.mycursor.execute(create_table_query)
+
+        create_table_query_user = """
+       CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    phone TEXT,
+    email VARCHAR(100),
+    password VARCHAR(100)
+    )"""   
+
+        self.mycursor.execute(create_table_query_user)        
 
 
 
@@ -50,7 +66,10 @@ class Db:
          self.mycursor.execute(query)
          return self.mycursor.fetchall()
 
-          
+    def getAllUser(self,query):
+         self.mycursor.execute("USE sql12832775") 
+         self.mycursor.execute(query)
+         return self.mycursor.fetchall()          
     
 
 

@@ -29,6 +29,16 @@ AND description LIKE %s
         self.Db.exceuteQuery(query, (name, desc, disease, sp, cp, qty))
         print("Medicine Added ✅")
 
+
+    def addUser(self, name, phone, email,password):
+        query = """
+        INSERT INTO users 
+        (name, phone, email,password)
+        VALUES (%s,%s,%s,%s)
+        """
+        self.Db.exceuteQuery(query, (name, phone, email,password))
+        print("User Added ✅")        
+
     def list_all(self):
         q="SELECT * FROM medicine"
         return self.Db.fetchAll(q,None)
@@ -97,7 +107,30 @@ WHERE id = %s
        values=(id,)
        return self.Db.fetchone(query,values)
     
+    def getAlUser(self):
+       query="SELECT * FROM users"
        
+       return self.Db.getAllUser(query) 
+
+    def updateUser(self,id,name,phone, email, password):
+       query = """
+    UPDATE users 
+    SET name = %s,
+        email = %s,
+        phone = %s,
+        password = %s
+    WHERE id = %s
+    """
+       values = (name, email, phone, password, id)
+
+       self.Db.exceuteQuery(query, values)
+       
+       print("Data updated successfully")         
+    
+    def getUser(self,email,password):
+       query="SELECT * FROM users WHERE phone = %s AND password = %s"
+       values=(email,password)
+       return self.Db.fetchone(query,values)       
 
 
    
