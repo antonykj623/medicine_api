@@ -134,37 +134,38 @@ WHERE id = %s
        values=(email,password)
        return self.Db.fetchone(query,values) 
 
-    def getAveragePrice(self,category):
-       query="SELECT *  FROM `medicine` WHERE `description` LIKE '%s"
-       values=(category,)
-       data=self.Db.fetchAll(query,values)
-       average_stockprice=0
-       totalst=0;
-       average_stockqty=0
-       totalsqty=0
-       count=0
-       for row in data:
-        count=count+1
-        totalst=totalst+row["stock_price"]
-        totalsqty=totalsqty+row['stock_qty']
+    def getAveragePrice(self, category):
 
-       average_stockprice=  totalst/count
-       average_stockqty=totalsqty/count
-     
+     query = "SELECT * FROM medicine WHERE description LIKE %s"
+     value = "%" + category + "%"
+     values = (value,)
 
+     data = self.Db.fetchAll(query, values)
 
-       model = LinearRegression()
-       for row in data:
-         X = row[[row["stock_price"],row["stock_qty"]]]
-         y = row["sale_price"]
-         model.fit(X,y)
+     if len(data) == 0:
+         return None
 
-       a=model.predict(average_stockprice,average_stockqty)  
-       return a
+     X = []
+     y = []
 
+     total_stockprice = 0
+     total_stockqty = 0
 
+     for row in data:
+        X.append([ float(row["stock_price"]),  float(row["stock_qty"])])
+        y.append( float(row["sale_price"]))
 
-          
+        total_stockprice +=  float(row["stock_price"])
+        total_stockqty +=  float(row["stock_qty"])
 
+     average_stockprice = total_stockprice / len(data)
+     average_stockqty = total_stockqty / len(data)
+
+     model = LinearRegression()
+     model.fit(X, y)
+
+     prediction = model.predict([[average_stockprice, average_stockqty]])
+
+     return float(prediction[0]) 
 
    

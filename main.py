@@ -266,7 +266,7 @@ def generateToken(mobile,password):
 
 
 
-@app.get("/medicine//averageprice/{disease}")
+@app.get("/medicine/averageprice/{disease}")
 def getAveragePriceByDisease(disease:str,authorization: HTTPAuthorizationCredentials = Depends(security)):
         if authorization is None:
          raise HTTPException(status_code=401, detail="Authorization header missing")
