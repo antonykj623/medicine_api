@@ -182,25 +182,19 @@ def UpdateMedicine(medicine: MedicineModel.Medicine,authorization: HTTPAuthoriza
     }
 
 @app.post("/user/register")
-def InsertUser(us:user.User,authorization: HTTPAuthorizationCredentials = Depends(security)):
-       if authorization is None:
-         raise HTTPException(status_code=401, detail="Authorization header missing")
+def InsertUser(us:user.User):
 
-         token = authorization.credentials.replace("Bearer ", "")
-         auth = userauth.UserAuthentication()
-         isvalid=auth.validToken(token)
-         if isvalid:     
-           db=Db.Db()
-           dt=DataHandle.DataHandleOp(db)
-           dt.addUser(us.name,us.phone,us.email)
+    db=Db.Db()
+    dt=DataHandle.DataHandleOp(db)
+    dt.addUser(us.name,us.phone,us.email)
 
-           return{
+    return{
   "message": "User added successfully",
         "data": us
     }
 
 @app.post("/user/update")
-def InsertUser(us:user.User,authorization: HTTPAuthorizationCredentials = Depends(security)):
+def updateUser(us:user.User,authorization: HTTPAuthorizationCredentials = Depends(security)):
        if authorization is None:
          raise HTTPException(status_code=401, detail="Authorization header missing")
 
