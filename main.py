@@ -185,8 +185,8 @@ def UpdateMedicine(medicine: MedicineModel.Medicine,authorization: HTTPAuthoriza
 def insert_user(us: user.User):
     db = Db.Db()
     dt = DataHandle.DataHandleOp(db)
-
-    dt.addUser(us.name, us.phone, us.email,us.password)
+    encrypted = hashlib.md5(us.password.encode()).hexdigest()
+    dt.addUser(us.name, us.phone, us.email,encrypted)
 
     return {
         "message": "User added successfully",
