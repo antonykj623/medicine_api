@@ -182,15 +182,15 @@ def UpdateMedicine(medicine: MedicineModel.Medicine,authorization: HTTPAuthoriza
     }
 
 @app.post("/user/register")
-def InsertUser(us:user.User):
+def insert_user(us: user.User):
+    db = Db.Db()
+    dt = DataHandle.DataHandleOp(db)
 
-    db=Db.Db()
-    dt=DataHandle.DataHandleOp(db)
-    dt.addUser(us.name,us.phone,us.email)
+    dt.addUser(us.name, us.phone, us.email,us.password)
 
-    return{
-  "message": "User added successfully",
-        "data": us
+    return {
+        "message": "User added successfully",
+        "data": us.model_dump()
     }
 
 @app.post("/user/update")
