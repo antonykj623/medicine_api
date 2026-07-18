@@ -262,7 +262,28 @@ def generateToken(mobile,password):
         return {"status":1,"message": "success","data":token}
     else:
 
-        return {"status":0,"message":"no data found"}      
+        return {"status":0,"message":"no data found"}     
+
+
+
+@app.get("/medicine//averageprice/{disease}")
+def getAveragePriceByDisease(disease:str,authorization: HTTPAuthorizationCredentials = Depends(security)):
+        if authorization is None:
+         raise HTTPException(status_code=401, detail="Authorization header missing")
+
+        token = authorization.credentials.replace("Bearer ", "")
+        auth = userauth.UserAuthentication()
+        isvalid=auth.validToken(token)
+        if isvalid:     
+          db=Db.Db()
+          dt=DataHandle.DataHandleOp(db)
+          data=dt.getAveragePrice(disease)
+          if(data):
+    
+           return {"status":1,"message": "success","predicted_price":data}
+          else:
+
+           return {"status":0,"message":"no data found"}    
     
 
 

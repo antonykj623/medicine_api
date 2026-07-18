@@ -1,4 +1,6 @@
 import Db
+from sklearn.linear_model import LinearRegression
+import pandas as pd
 
 class DataHandleOp:
 
@@ -130,7 +132,39 @@ WHERE id = %s
     def getUser(self,email,password):
        query="SELECT * FROM users WHERE phone = %s AND password = %s"
        values=(email,password)
-       return self.Db.fetchone(query,values)       
+       return self.Db.fetchone(query,values) 
+
+    def getAveragePrice(self,category):
+       query="SELECT *  FROM `medicine` WHERE `description` LIKE '%s"
+       values=(category,)
+       data=self.Db.fetchAll(query,values)
+       average_stockprice=0
+       totalst=0;
+       average_stockqty=0
+       totalsqty=0
+       count=0
+       for row in data:
+        count=count+1
+        totalst=totalst+row["stock_price"]
+        totalsqty=totalsqty+row['stock_qty']
+
+       average_stockprice=  totalst/count
+       average_stockqty=totalsqty/count
+     
+
+
+       model = LinearRegression()
+       for row in data:
+         X = row[[row["stock_price"],row["stock_qty"]]]
+         y = row["sale_price"]
+         model.fit(X,y)
+
+       a=model.predict(average_stockprice,average_stockqty)  
+       return a
+
+
+
+          
 
 
    
