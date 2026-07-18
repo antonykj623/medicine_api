@@ -15,4 +15,3 @@ python-jose[cryptography]
 numpy==2.3.2
 pandas==2.3.2
 scikit-learn==1.7.2
-uvicorn==0.37.0
