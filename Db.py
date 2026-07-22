@@ -3,7 +3,7 @@ import mysql.connector
 class Db:
 
     db="sql12832775"
-    #db="med_db"
+   #  db="med_db"
     
     def __init__(self):
         mydb=mysql.connector.connect(  host="sql12.freesqldatabase.com",
@@ -74,7 +74,10 @@ class Db:
          self.mycursor.execute(query)
          return self.mycursor.fetchall()          
     
-
+    def getAlMedicineData(self,query):
+         self.mycursor.execute("USE "+self.db) 
+         self.mycursor.execute(query)
+         return self.mycursor.fetchall() 
 
     def fetchone(self,query,values):
          self.mycursor.execute("USE "+self.db)  

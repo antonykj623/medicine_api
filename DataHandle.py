@@ -1,6 +1,7 @@
 import Db
 from sklearn.linear_model import LinearRegression
 import pandas as pd
+import numpy as np
 
 class DataHandleOp:
 
@@ -133,6 +134,132 @@ WHERE id = %s
        query="SELECT * FROM users WHERE phone = %s AND password = %s"
        values=(email,password)
        return self.Db.fetchone(query,values) 
+    
+    def geTotalInventoryStock(self):
+       query="SELECT stock_price,stock_qty  FROM medicine"
+       data = self.Db.getAlMedicineData(query)
+       array1=np.array(data)
+
+       total_inventory=0
+
+    
+       for item in array1:
+        total_inventory=total_inventory+(float(item['stock_qty'])*float(item['stock_price']))
+        
+
+
+       return total_inventory
+
+
+
+
+    def getTotalEstimatedProfitEach(self):
+       query="SELECT stock_price,stock_qty,sale_price  FROM medicine"
+       data = self.Db.getAlMedicineData(query)
+       
+
+       
+
+    
+       for item in data:
+        stprice=float(item['stock_price'])
+        slprice=float(item['sale_price'])
+        dif=slprice-stprice;
+        item['unitprofit_price']=dif
+        item['total_profit']=(float(item['stock_qty'])*dif)
+
+       return data
+
+
+    def getTotalEstimatedProfit(self):
+       query="SELECT stock_price,stock_qty,sale_price  FROM medicine"
+       data = self.Db.getAlMedicineData(query)
+       array1=np.array(data)
+
+       total_profit=0
+
+    
+       for item in array1:
+        stprice=float(item['stock_price'])
+        slprice=float(item['sale_price'])
+        dif=slprice-stprice;
+
+
+        
+
+        total_profit=total_profit+(float(item['stock_qty'])*dif)
+        
+
+
+       return round(total_profit, 2)
+
+
+    
+    def getEstimatedProfitByMedicine(self,medicine):
+       query="SELECT stock_price,stock_qty,sale_price  FROM medicine WHERE name = %s"
+       values=(medicine,)
+       data =self.Db.fetchone(query,values)    
+       print(data)   
+       
+       
+
+       total_profit=0
+       stprice = float(data["stock_price"])
+       stock_qty = float(data["stock_qty"])
+       slprice = float(data["sale_price"])
+       diff=slprice-stprice
+       total_profit=total_profit+(stock_qty*diff)
+
+
+        
+
+
+        
+
+
+       return round(total_profit, 2)
+
+
+
+
+    
+
+
+
+    
+
+        
+    def getMedicineProperties(self):
+       query="SELECT *  FROM medicine"
+       data = self.Db.getAlMedicineData(query)
+       array1=np.array(data)
+       
+       arr = np.array([])    
+       for item in array1:
+        arr = np.append(arr, float(item['sale_price']))
+
+
+        minprice=np.min(arr) 
+        maxprice=np.max(arr)
+
+        mdianval=np.median(arr)
+        meeanval=np.mean(arr)
+
+        finalarr={"min_price":minprice,"maxprice":maxprice,"meadian_sale_price":mdianval,"meanval_price":meeanval}
+        
+        
+
+
+       return finalarr 
+
+       
+
+
+
+
+
+       
+       
 
     def getAveragePrice(self, category):
 
@@ -168,4 +295,5 @@ WHERE id = %s
 
      return float(prediction[0]) 
 
+   
    

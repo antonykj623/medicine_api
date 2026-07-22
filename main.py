@@ -286,6 +286,139 @@ def getAveragePriceByDisease(disease:str,authorization: HTTPAuthorizationCredent
            return {"status":0,"message":"no data found"}    
     
 
+@app.get("/totalinventoryprice")
+def getTotalInventoryPrice(authorization: HTTPAuthorizationCredentials = Depends(security)):
+        if authorization is None:
+         raise HTTPException(status_code=401, detail="Authorization header missing")
+
+        token = authorization.credentials.replace("Bearer ", "")
+        auth = userauth.UserAuthentication()
+        isvalid=auth.validToken(token)
+        if isvalid:     
+          db=Db.Db()
+          dt=DataHandle.DataHandleOp(db)
+          data=dt.geTotalInventoryStock()
+          if(data):
+    
+           return {"status":1,"message": "success","predicted_price":data}
+          else:
+
+           return {"status":0,"message":"no data found"}    
+          
+
+
+@app.get("/medicinepropertyvalues")
+def getMedicineProperties(authorization: HTTPAuthorizationCredentials = Depends(security)):
+        if authorization is None:
+         raise HTTPException(status_code=401, detail="Authorization header missing")
+
+        token = authorization.credentials.replace("Bearer ", "")
+        auth = userauth.UserAuthentication()
+        isvalid=auth.validToken(token)
+        if isvalid:     
+          db=Db.Db()
+          dt=DataHandle.DataHandleOp(db)
+          data=dt.getMedicineProperties()
+          if(data):
+    
+           return {"status":1,"message": "success","predicted_price":data}
+          else:
+
+           return {"status":0,"message":"no data found"}         
+
+@app.get("/estimateMedicineprofits")
+def calculateMedicineProfits(authorization: HTTPAuthorizationCredentials = Depends(security)):
+        if authorization is None:
+         raise HTTPException(status_code=401, detail="Authorization header missing")
+
+        token = authorization.credentials.replace("Bearer ", "")
+        auth = userauth.UserAuthentication()
+        isvalid=auth.validToken(token)
+        if isvalid:     
+          db=Db.Db()
+          dt=DataHandle.DataHandleOp(db)
+          data=dt.getTotalEstimatedProfit()
+          if(data):
+    
+           return {"status":1,"message": "success","predicted_price":data}
+          else:
+
+           return {"status":0,"message":"no data found"}            
+
+
+
+
+@app.get("/Medicineprofits")
+def MedicineProfits(authorization: HTTPAuthorizationCredentials = Depends(security)):
+        if authorization is None:
+         raise HTTPException(status_code=401, detail="Authorization header missing")
+
+        token = authorization.credentials.replace("Bearer ", "")
+        auth = userauth.UserAuthentication()
+        isvalid=auth.validToken(token)
+        if isvalid:     
+          db=Db.Db()
+          dt=DataHandle.DataHandleOp(db)
+          data=dt.getTotalEstimatedProfit()
+          if(data):
+    
+           return {"status":1,"message": "success","predicted_price":data}
+          else:
+
+           return {"status":0,"message":"no data found"}    
+
+
+
+
+
+
+
+@app.get("/estimateMedicineprofitsbyMedicine/{medicine}")
+def getMedicineProfits(medicine:str,authorization: HTTPAuthorizationCredentials = Depends(security)):
+        if authorization is None:
+         raise HTTPException(status_code=401, detail="Authorization header missing")
+
+        token = authorization.credentials.replace("Bearer ", "")
+        auth = userauth.UserAuthentication()
+        isvalid=auth.validToken(token)
+        if isvalid:     
+          db=Db.Db()
+          dt=DataHandle.DataHandleOp(db)
+          data=dt.getEstimatedProfitByMedicine(medicine)
+          if(data):
+    
+           return {"status":1,"message": "success","predicted_price":data}
+          else:
+
+           return {"status":0,"message":"no data found"}     
+               
+
+
+
+@app.get("/estimateEachMedicineprofits")
+def getMedicineProfits(authorization: HTTPAuthorizationCredentials = Depends(security)):
+        if authorization is None:
+         raise HTTPException(status_code=401, detail="Authorization header missing")
+
+        token = authorization.credentials.replace("Bearer ", "")
+        auth = userauth.UserAuthentication()
+        isvalid=auth.validToken(token)
+        if isvalid:     
+          db=Db.Db()
+          dt=DataHandle.DataHandleOp(db)
+          data=dt.getTotalEstimatedProfitEach()
+          if(len(data)>0):
+    
+           return {"status":1,"message": "success","predicted_price":data}
+          else:
+
+           return {"status":0,"message":"no data found"}    
+
+
+
+
+
+
 
 
 
